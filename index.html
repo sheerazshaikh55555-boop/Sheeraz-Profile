@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sheeraz Shaikh — Marketing &amp; AI Product Leader</title>
+<meta name="description" content="Sheeraz Shaikh — Marketing &amp; AI Product Leader based in Dubai, UAE. 10+ years across real estate, PropTech, HR-tech and agentic AI systems.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --ink-950:#08090b; --ink-900:#0d0e12; --ink-850:#111319; --ink-800:#181a21; --ink-700:#262a33;
+    --ice-50:#f7fafb; --ice-100:#ebeef1; --ice-200:#dde2e6; --steel-400:#9aa5ac;
+    --cyan-400:#02d2e3; --cyan-alpha-25: rgb(2 210 227 / .25); --cyan-alpha-10: rgb(2 210 227 / .1);
+    --white-alpha-10: rgb(255 255 255 / .1); --white-alpha-20: rgb(255 255 255 / .2); --white-alpha-40: rgb(255 255 255 / .4);
+    --ink-alpha-08: rgb(8 9 11 / .08); --ink-alpha-35: rgb(8 9 11 / .4);
+    --font-display:"Oswald", Impact, sans-serif;
+    --font-sans:"Space Grotesk", system-ui, sans-serif;
+    --ease: cubic-bezier(.2,0,0,1);
+    --ease-plate: cubic-bezier(.33,0,0,1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--ink-950); color:var(--ice-50);
+    font-family:var(--font-sans); -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none; margin:0; padding:0;}
+  h1,h2,h3,p{margin:0;}
+  button{font:inherit; cursor:pointer;}
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+  /* ============ LOADER ============ */
+  #loader{
+    position:fixed; inset:0; z-index:999; background:var(--ink-950);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem;
+    transition:opacity .6s var(--ease), visibility .6s var(--ease);
+  }
+  #loader.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+  #loader img{width:min(60vw, 220px); opacity:.14; filter:brightness(6);}
+  .loader-bar{width:min(60vw,220px); height:2px; background:var(--ink-700); overflow:hidden; position:relative;}
+  .loader-bar span{position:absolute; inset:0; background:var(--cyan-400); transform-origin:left; transform:scaleX(0); transition:transform .25s linear;}
+  .loader-label{font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color:var(--steel-400);}
+
+  /* ============ LAYOUT HELPERS ============ */
+  .wrap{max-width:1360px; margin:0 auto; padding-inline:clamp(1.25rem, 4vw, 3rem);}
+  section{position:relative;}
+  .eyebrow{
+    font-family:var(--font-sans); text-transform:uppercase; font-weight:600;
+    letter-spacing:.08em; font-size:.8rem; color:var(--cyan-400);
+  }
+  .accent{color:var(--cyan-400);}
+
+  /* bracket-corner panel */
+  .bracket{ position:relative; }
+  .bracket .corner{ position:absolute; width:.7rem; height:.7rem; }
+  .bracket .corner svg{ width:100%; height:100%; display:block; }
+  .bracket .c-tl{ top:0; left:0; }
+  .bracket .c-tr{ top:0; right:0; transform:scaleX(-1); }
+  .bracket .c-br{ bottom:0; right:0; transform:scale(-1); }
+  .bracket .c-bl{ bottom:0; left:0; transform:scaleY(-1); }
+
+  /* reveal engine */
+  .reveal{ overflow:hidden; display:inline-block; vertical-align:top; }
+  .reveal .unit{ display:inline-block; opacity:0; transform:translateY(.45em); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+  .reveal.words .unit{ margin-right:.28em; }
+  [data-reveal-group].in .reveal .unit{ opacity:1; transform:translateY(0); }
+  .rise{ opacity:0; transform:translateY(1.5rem); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+  .rise.in{ opacity:1; transform:translateY(0); }
+  .rise-d1.in{ transition-delay:.08s; } .rise-d2.in{ transition-delay:.16s; } .rise-d3.in{ transition-delay:.24s; }
+  .rise-d4.in{ transition-delay:.32s; } .rise-d5.in{ transition-delay:.4s; } .rise-d6.in{ transition-delay:.48s; }
+
+  canvas.field{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+
+  /* ============ NAV ============ */
+  header.masthead{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem clamp(1.25rem,4vw,3rem);
+    background:linear-gradient(to bottom, rgb(8 9 11 / .85), transparent);
+    backdrop-filter:blur(2px);
+  }
+  header.masthead .logo{ display:flex; align-items:center; gap:.6rem; }
+  header.masthead .logo img{ height:1.6rem; width:auto; filter:invert(1) brightness(10); }
+  header.masthead .logo span{ font-family:var(--font-display); font-weight:700; letter-spacing:.02em; font-size:.95rem; text-transform:uppercase; }
+  nav.primary{ display:flex; gap:2.4rem; }
+  nav.primary a{ font-size:.85rem; text-transform:uppercase; letter-spacing:.03em; color:var(--ice-50); transition:color .15s var(--ease); position:relative; }
+  nav.primary a:hover{ color:var(--cyan-400); }
+  .hire-btn{ font-size:.85rem; text-transform:uppercase; letter-spacing:.03em; font-weight:600; display:flex; align-items:center; gap:.5rem; }
+  .hire-btn:hover{ color:var(--cyan-400); }
+  .burger{ display:none; flex-direction:column; gap:.3rem; background:none; border:0; padding:.4rem; }
+  .burger span{ width:1.5rem; height:1px; background:var(--ice-50); display:block; }
+
+  #sheet{
+    position:fixed; inset:0; z-index:200; background:var(--ink-950); display:flex; flex-direction:column;
+    padding:1.5rem 2rem; opacity:0; visibility:hidden; transition:opacity .3s var(--ease), visibility .3s var(--ease);
+  }
+  #sheet.open{ opacity:1; visibility:visible; }
+  #sheet .top{ display:flex; justify-content:space-between; align-items:center; }
+  #sheet .close{ background:none; border:0; width:2rem; height:2rem; position:relative; }
+  #sheet .close::before, #sheet .close::after{ content:""; position:absolute; left:0; right:0; top:50%; height:1px; background:var(--ice-50); }
+  #sheet .close::before{ transform:rotate(45deg); }
+  #sheet .close::after{ transform:rotate(-45deg); }
+  #sheet nav{ flex:1; display:flex; flex-direction:column; justify-content:center; gap:1.1rem; }
+  #sheet nav a{ font-family:var(--font-display); font-weight:700; font-size:2.4rem; text-transform:uppercase; opacity:0; transform:translateY(.75rem); transition:opacity .4s var(--ease), transform .4s var(--ease), color .15s; }
+  #sheet.open nav a{ opacity:1; transform:translateY(0); }
+  #sheet nav a:hover{ color:var(--cyan-400); }
+
+  @media (max-width:900px){
+    nav.primary, .hire-btn{ display:none; }
+    .burger{ display:flex; }
+  }
+
+  /* ============ HERO ============ */
+  #hero{ min-height:100svh; display:flex; align-items:center; background:var(--ink-950); overflow:hidden; padding-top:5rem; }
+  #hero .wrap{ width:100%; position:relative; z-index:5; display:grid; grid-template-columns:1.3fr 1fr; gap:3rem; align-items:end; padding-bottom:3rem; }
+  .hero-id{ position:relative; }
+  .hero-id .eyebrow{ margin-bottom:1rem; display:block; }
+  .hero-id h1{
+    font-family:var(--font-display); font-weight:700; text-transform:uppercase; line-height:.95;
+    font-size:clamp(3rem, 8vw, 6.2rem); letter-spacing:-.01em;
+  }
+  .hero-id p.tagline{
+    margin-top:1.4rem; max-width:34rem; font-size:clamp(1rem,1.6vw,1.2rem); line-height:1.5; color:var(--steel-400);
+  }
+  .meta-rows{ margin-top:1.8rem; display:flex; flex-wrap:wrap; gap:1.6rem; }
+  .meta-rows .row{ display:flex; align-items:center; gap:.55rem; font-size:.95rem; text-transform:uppercase; letter-spacing:.02em; }
+  .meta-rows .row .dot{ color:var(--cyan-400); }
+  .hero-actions{ margin-top:2.4rem; display:flex; flex-wrap:wrap; gap:1.1rem; align-items:center; }
+
+  .cta{
+    position:relative; height:3.2rem; padding:0 1.7rem; display:inline-flex; align-items:center; gap:.9rem;
+    font-size:.85rem; text-transform:uppercase; font-weight:600; letter-spacing:.03em;
+    color:var(--cyan-400); background:var(--ink-900); border:1px solid var(--cyan-alpha-25); overflow:hidden;
+    clip-path:polygon(0 0, 100% 0, 100% 70%, 88% 100%, 0 100%);
+  }
+  .cta .flood{ position:absolute; inset:0; background:var(--cyan-400); transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease-plate); z-index:0; }
+  .cta span, .cta svg{ position:relative; z-index:1; transition:color .25s var(--ease-plate), stroke .25s var(--ease-plate); }
+  .cta svg{ width:.85rem; height:.7rem; transition:transform .15s var(--ease); }
+  .cta:hover .flood{ transform:scaleX(1); }
+  .cta:hover span{ color:var(--ink-950); }
+  .cta:hover svg{ stroke:var(--ink-950); transform:translateX(.25rem); }
+  .cta.ghost{ background:transparent; border-color:var(--white-alpha-20); color:var(--ice-50); }
+  .cta.ghost .flood{ background:var(--ice-50); }
+  .cta.ghost:hover span{ color:var(--ink-950); }
+
+  .hero-panels{ display:flex; flex-direction:column; gap:1.4rem; }
+  .panel{ padding:1.1rem 1.3rem; color:var(--steel-400); }
+  .panel .corner svg path{ stroke:var(--ice-50); }
+  .panel .p-eyebrow{ font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--cyan-400); font-weight:600; }
+  .panel dl{ margin:.8rem 0 0; display:flex; flex-direction:column; gap:.3rem; }
+  .panel dt{ font-weight:700; color:var(--ice-50); text-transform:uppercase; font-size:.9rem; }
+  .panel dd{ margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.02em; }
+  .panel .stat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; margin-top:.9rem; }
+  .panel .stat-grid div{ text-align:center; }
+  .panel .stat-grid b{ display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--ice-50); font-weight:500; }
+  .panel .stat-grid small{ font-size:.62rem; text-transform:uppercase; letter-spacing:.02em; }
+
+  @media (max-width:900px){
+    #hero .wrap{ grid-template-columns:1fr; }
+  }
+
+  /* ============ IMPACT / STATS ============ */
+  #impact{ background:var(--ink-950); padding:7rem 0 6rem; border-top:1px solid var(--ink-800); }
+  #impact h2{
+    font-family:var(--font-display); font-weight:700; text-transform:uppercase; line-height:.95; color:var(--cyan-400);
+    font-size:clamp(2.2rem,5vw,3.6rem);
+  }
+  #impact .lede{ max-width:36rem; margin-top:1.1rem; color:var(--steel-400); font-size:1rem; line-height:1.55; text-transform:uppercase; letter-spacing:.01em; }
+  .rule{ width:2.2rem; height:2px; background:var(--cyan-400); margin:1.6rem 0 2.6rem; transform-origin:left; transform:scaleX(0); transition:transform .6s var(--ease); }
+  .rule.in{ transform:scaleX(1); }
+
+  .stat-tiles{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--ink-800); border:1px solid var(--ink-800); }
+  .stat-tiles .tile{ background:var(--ink-950); padding:2rem 1.6rem; position:relative; }
+  .stat-tiles .tile b{
+    display:block; font-family:var(--font-display); font-weight:500; font-size:clamp(2.2rem,4vw,3.2rem);
+    color:var(--ice-50); letter-spacing:-.02em; line-height:.9;
+  }
+  .stat-tiles .tile b .accent-num{ color:var(--cyan-400); }
+  .stat-tiles .tile small{ display:block; margin-top:.6rem; font-size:.78rem; text-transform:uppercase; letter-spacing:.02em; color:var(--steel-400); }
+
+  .chips{ margin-top:2.2rem; display:flex; flex-wrap:wrap; gap:.6rem; }
+  .chips span{
+    font-size:.75rem; text-transform:uppercase; letter-spacing:.02em; padding:.5rem .9rem;
+    border:1px solid var(--ink-700); color:var(--steel-400);
+  }
+
+  @media (max-width:820px){ .stat-tiles{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .stat-tiles{ grid-template-columns:1fr; } }
+
+  /* ============ TIMELINE ============ */
+  #timeline{ background:var(--ink-900); padding:7rem 0 6rem; border-top:1px solid var(--ink-800); overflow:clip; }
+  #timeline .head{ display:flex; justify-content:space-between; align-items:flex-end; gap:2rem; flex-wrap:wrap; margin-bottom:4rem; }
+  #timeline h2{
+    font-family:var(--font-display); font-weight:700; text-transform:uppercase; line-height:.95; color:var(--cyan-400);
+    font-size:clamp(2.2rem,5vw,3.6rem);
+  }
+  #timeline .head p{ max-width:22rem; color:var(--steel-400); font-size:.95rem; text-transform:uppercase; line-height:1.5; }
+
+  .rail-wrap{ position:relative; }
+  .rail{ position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%); background:var(--ink-700); }
+  .rail-fill{ position:absolute; left:0; top:0; width:100%; height:0; background:var(--cyan-400); box-shadow:0 0 12px var(--cyan-alpha-25); transition:height .1s linear; }
+  .rail-marker{ position:absolute; left:50%; width:.6rem; height:.6rem; background:var(--cyan-400); transform:translate(-50%,-50%) rotate(0deg); transition:top .1s linear; box-shadow:0 0 10px var(--cyan-400); }
+
+  .t-row{ position:relative; display:grid; grid-template-columns:1fr 3rem 1fr; align-items:center; margin-bottom:3.2rem; }
+  .t-row:last-child{ margin-bottom:0; }
+  .t-card{ padding:1.4rem 1.6rem; background:var(--ink-850); border:1px solid var(--ink-700); transition:opacity .5s var(--ease), transform .5s var(--ease), border-color .25s; }
+  .t-row:nth-child(odd) .t-card{ grid-column:1; justify-self:end; text-align:right; }
+  .t-row:nth-child(even) .t-card{ grid-column:3; justify-self:start; text-align:left; }
+  .t-row.pre{ opacity:0; }
+  .t-row:nth-child(odd) .t-card.pre{ transform:translateX(-1.5rem); }
+  .t-row:nth-child(even) .t-card.pre{ transform:translateX(1.5rem); }
+  .t-row .t-card.in{ opacity:1; transform:translateX(0); }
+  .t-card:hover{ border-color:var(--cyan-alpha-25); }
+  .t-year{ font-family:var(--font-display); font-weight:700; color:var(--cyan-400); font-size:1rem; letter-spacing:.05em; }
+  .t-role{ margin-top:.4rem; font-family:var(--font-display); font-weight:600; text-transform:uppercase; font-size:1.25rem; line-height:1.15; }
+  .t-org{ margin-top:.2rem; font-size:.85rem; color:var(--steel-400); text-transform:uppercase; letter-spacing:.02em; }
+  .t-desc{ margin-top:.7rem; font-size:.88rem; line-height:1.55; color:var(--ice-100); }
+  .t-node{ grid-column:2; justify-self:center; width:.85rem; height:.85rem; background:var(--ink-900); border:2px solid var(--ink-700); border-radius:50%; z-index:2; transition:border-color .3s, background .3s; }
+  .t-node.lit{ border-color:var(--cyan-400); background:var(--cyan-400); box-shadow:0 0 12px var(--cyan-400); }
+  .t-row.current .t-card{ border-color:var(--cyan-400); background:linear-gradient(180deg, rgb(2 210 227/.06), transparent); }
+
+  @media (max-width:760px){
+    .rail{ left:1.1rem; }
+    .t-row{ grid-template-columns:2.4rem 1fr; }
+    .t-node{ grid-column:1; }
+    .t-row:nth-child(odd) .t-card, .t-row:nth-child(even) .t-card{ grid-column:2; justify-self:start; text-align:left; }
+    .t-row:nth-child(odd) .t-card.pre, .t-row:nth-child(even) .t-card.pre{ transform:translateX(1rem); }
+    .rail-marker{ left:1.1rem; }
+  }
+
+  /* ============ SKILLS (light) ============ */
+  #skills{ background:var(--ice-50); color:var(--ink-950); padding:7rem 0; }
+  #skills .top{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+  #skills h2{ font-family:var(--font-display); font-weight:700; text-transform:uppercase; line-height:.95; font-size:clamp(2.2rem,5vw,3.6rem); }
+  #skills h2 .accent{ color:var(--cyan-400); }
+  #skills .top p{ margin-top:1.3rem; max-width:30rem; color:rgb(8 9 11/.6); line-height:1.6; font-size:1rem; }
+  #skills .top .cta{ margin-top:1.8rem; }
+
+  .strength{ margin-bottom:1.1rem; }
+  .strength .lbl{ display:flex; justify-content:space-between; font-size:.82rem; text-transform:uppercase; letter-spacing:.02em; margin-bottom:.4rem; }
+  .strength .bar{ height:6px; background:var(--ink-alpha-08); position:relative; overflow:hidden; }
+  .strength .bar i{ position:absolute; inset:0; background:var(--ink-950); transform-origin:left; transform:scaleX(0); transition:transform 1s var(--ease-plate); }
+  .strength .bar i.accentbar{ background:var(--cyan-400); }
+  .strength.in .bar i{ transform:scaleX(var(--val)); }
+
+  .panel-light{ padding:1.5rem; border:1px solid var(--ink-alpha-08); background:#fff; }
+  .panel-light .corner svg path{ stroke:var(--ink-950); }
+  .panel-light .p-eyebrow{ font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--cyan-400); font-weight:700; margin-bottom:1.1rem; display:block; }
+  .tool-tags{ display:flex; flex-wrap:wrap; gap:.55rem; }
+  .tool-tags span{ font-size:.78rem; text-transform:uppercase; padding:.45rem .8rem; background:var(--ink-alpha-08); letter-spacing:.02em; }
+
+  .below-grid{ margin-top:4rem; display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; }
+  .info-block h3{ font-size:.75rem; text-transform:uppercase; letter-spacing:.12em; color:var(--cyan-400); font-weight:700; margin-bottom:1rem; }
+  .edu-item{ margin-bottom:.9rem; }
+  .edu-item b{ display:block; font-size:.95rem; text-transform:uppercase; }
+  .edu-item span{ font-size:.8rem; color:rgb(8 9 11/.55); text-transform:uppercase; }
+  .cert-list li{ font-size:.85rem; padding:.5rem 0; border-bottom:1px solid var(--ink-alpha-08); text-transform:uppercase; letter-spacing:.01em; }
+  .cert-list li:last-child{ border-bottom:0; }
+
+  .brands{ margin-top:4rem; }
+  .brands h3{ font-size:.75rem; text-transform:uppercase; letter-spacing:.12em; color:var(--cyan-400); font-weight:700; margin-bottom:1.2rem; }
+  .brand-grid{ display:flex; flex-wrap:wrap; gap:.7rem; }
+  .brand-grid span{
+    font-family:var(--font-display); font-weight:600; text-transform:uppercase; font-size:.85rem;
+    padding:.75rem 1.1rem; border:1px solid var(--ink-950); letter-spacing:.01em;
+  }
+
+  @media (max-width:900px){
+    #skills .top{ grid-template-columns:1fr; }
+    .below-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ============ FOOTER ============ */
+  #contact{ position:relative; background:var(--cyan-400); padding:1rem; }
+  #contact .panel-dark{ position:relative; background:var(--ink-950); color:var(--ice-50); padding:clamp(2.5rem,6vw,5rem) clamp(1.5rem,5vw,4rem); overflow:hidden; min-height:70vh; display:flex; flex-direction:column; justify-content:space-between; }
+  #contact canvas.field{ opacity:.5; }
+  .foot-top{ position:relative; z-index:2; display:flex; justify-content:space-between; align-items:flex-start; gap:2rem; flex-wrap:wrap; }
+  .foot-logo{ display:flex; align-items:center; gap:.6rem; }
+  .foot-logo img{ height:1.7rem; width:auto; filter:invert(1) brightness(10); }
+  .foot-head{ text-align:right; }
+  .foot-head h2{
+    font-family:var(--font-display); font-weight:700; text-transform:uppercase; line-height:.95; color:var(--cyan-400);
+    font-size:clamp(2.4rem,7vw,4.6rem);
+  }
+  .foot-head h2 span{ color:var(--ice-50); }
+
+  .foot-mid{ position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin:3.5rem 0; }
+  .foot-nav{ display:flex; flex-direction:column; gap:.9rem; }
+  .foot-nav a{ font-family:var(--font-display); font-weight:700; text-transform:uppercase; font-size:1.6rem; line-height:1; transition:color .15s; }
+  .foot-nav a:hover{ color:var(--cyan-400); }
+  .foot-contact{ display:flex; flex-direction:column; gap:1.2rem; align-items:flex-start; justify-content:center; }
+  .foot-contact .cta{ align-self:flex-start; }
+  .foot-contact .line{ font-size:1rem; text-transform:uppercase; letter-spacing:.02em; }
+  .foot-contact .line a:hover{ color:var(--cyan-400); }
+
+  .foot-bottom{ position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; padding-top:1.6rem; border-top:1px solid var(--ink-700); }
+  .foot-bottom small{ font-size:.75rem; text-transform:uppercase; letter-spacing:.02em; color:var(--white-alpha-40); }
+  .foot-socials{ display:flex; gap:1.6rem; }
+  .foot-socials a{ font-size:.8rem; text-transform:uppercase; letter-spacing:.02em; }
+  .foot-socials a:hover{ color:var(--cyan-400); }
+
+  @media (max-width:760px){
+    .foot-mid{ grid-template-columns:1fr; }
+    .foot-head{ text-align:left; }
+    .foot-top{ flex-direction:column; }
+  }
+
+  ::selection{ background:var(--cyan-400); color:var(--ink-950); }
+</style>
+</head>
+<body>
+
+<div id="loader" role="status" aria-label="Loading">
+  <img src="assets/logo.png" alt="" aria-hidden="true">
+  <div class="loader-bar"><span id="loaderFill"></span></div>
+  <div class="loader-label">Loading Profile</div>
+</div>
+
+<header class="masthead">
+  <a class="logo" href="#hero" aria-label="Sheeraz Shaikh">
+    <img src="assets/logo.png" alt="">
+    <span>Sheeraz Shaikh</span>
+  </a>
+  <nav class="primary" aria-label="Primary">
+    <a href="#impact">Impact</a>
+    <a href="#timeline">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="hire-btn" href="assets/Sheeraz-Shaikh-CV.pdf" download>
+    <span aria-hidden="true">[</span> Download CV <span aria-hidden="true">→ ]</span>
+  </a>
+  <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</header>
+
+<div id="sheet" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="top">
+    <img src="assets/logo.png" alt="" style="height:1.5rem;filter:invert(1) brightness(10);">
+    <button class="close" id="sheetClose" aria-label="Close menu"></button>
+  </div>
+  <nav>
+    <a href="#hero">Profile</a>
+    <a href="#impact">Impact</a>
+    <a href="#timeline">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+
+<main>
+
+<section id="hero">
+  <canvas class="field" id="heroField" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-id">
+      <span class="eyebrow" data-reveal-group><span class="reveal words" data-split="Marketing &amp; AI Product Leader"></span></span>
+      <h1 data-reveal-group>
+        <span class="reveal words" data-split="Sheeraz"></span><br>
+        <span class="reveal words" data-split="Shaikh"></span>
+      </h1>
+      <p class="tagline rise rise-d2">
+        Building AI-powered growth systems across real estate, PropTech &amp; HR-tech —
+        from brand strategy and performance marketing to agentic AI workflows and voice agents.
+      </p>
+      <div class="meta-rows rise rise-d3">
+        <div class="row"><span class="dot">◆</span> Dubai, UAE</div>
+        <div class="row"><span class="dot">◆</span> 10+ Years Experience</div>
+        <div class="row"><span class="dot">◆</span> AI Product &amp; Growth Leadership</div>
+      </div>
+      <div class="hero-actions rise rise-d4">
+        <a class="cta" href="assets/Sheeraz-Shaikh-CV.pdf" download>
+          <span class="flood"></span>
+          <span>Download CV</span>
+          <svg viewBox="0 0 14 11" fill="none"><path d="M0 5.5H13M8 10L13 5.5L8 1" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
+        <a class="cta ghost" href="https://www.linkedin.com/in/sheerazshaikh231/" target="_blank" rel="noopener">
+          <span class="flood"></span>
+          <span>LinkedIn ↗</span>
+        </a>
+        <a class="cta ghost" href="mailto:sheerazshaikh1@outlook.com">
+          <span class="flood"></span>
+          <span>Email Me</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-panels rise rise-d3">
+      <div class="panel bracket">
+        <span class="corner c-tl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="corner c-tr"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="corner c-br"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="corner c-bl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="p-eyebrow">Currently</span>
+        <dl>
+          <dt>ASICO — Marketing &amp; Product</dt>
+          <dd>Senior Marketing Manager</dd>
+          <dd>Senior Product &amp; Design Manager</dd>
+        </dl>
+      </div>
+      <div class="panel bracket">
+        <span class="corner c-tl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="corner c-tr"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="corner c-br"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="corner c-bl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+        <span class="p-eyebrow">Snapshot</span>
+        <div class="stat-grid">
+          <div><b>10+</b><small>Years</small></div>
+          <div><b>7+</b><small>Brands</small></div>
+          <div><b>12</b><small>Team</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="impact">
+  <canvas class="field" id="impactField" aria-hidden="true"></canvas>
+  <div class="wrap" style="position:relative;z-index:2;">
+    <span class="eyebrow" data-reveal-group><span class="reveal words" data-split="Results"></span></span>
+    <h2 data-reveal-group><span class="reveal words" data-split="The Impact So Far."></span></h2>
+    <p class="lede rise rise-d2">A decade of turning marketing operations into measurable, scalable revenue systems — across real estate, growth agencies and a multi-brand AI-first holding group.</p>
+    <div class="rule" data-observe></div>
+
+    <div class="stat-tiles">
+      <div class="tile rise" data-count="10" data-suffix="×"><b><span class="num">0×</span></b><small>Qualified lead growth in 6 months</small></div>
+      <div class="tile rise rise-d1" data-count="40" data-suffix="%"><b><span class="num">0%</span></b><small>CPA reduction via segmentation &amp; automation</small></div>
+      <div class="tile rise rise-d2" data-count="1000" data-suffix="+"><b><span class="num">0+</span></b><small>AI voice-agent conversations / month</small></div>
+      <div class="tile rise rise-d3"><b>AED <span class="accent-num">600K</span></b><small>Marketing budget managed group-wide</small></div>
+      <div class="tile rise rise-d4" data-count="7" data-suffix="+"><b><span class="num">0+</span></b><small>Brands managed under one holding group</small></div>
+      <div class="tile rise rise-d5" data-count="5" data-suffix=""><b><span class="num">0</span></b><small>Brand identities built or fully rebranded</small></div>
+    </div>
+
+    <div class="chips rise rise-d5">
+      <span>3 Apps Launched With Full Branding</span>
+      <span>2 New Brands From Zero</span>
+      <span>35% Online Lead Increase — TVG</span>
+      <span>5× Revenue Growth — Mobile XA</span>
+      <span>$50K/mo Paid Media Managed</span>
+      <span>12-Member Team incl. AI Pod</span>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <span class="eyebrow" data-reveal-group><span class="reveal words" data-split="The Journey"></span></span>
+        <h2 data-reveal-group><span class="reveal words" data-split="From Graphics Desk to AI Product Desk."></span></h2>
+      </div>
+      <p class="rise">Nine years, eight companies, one throughline — turning marketing craft into AI-driven product systems.</p>
+    </div>
+
+    <div class="rail-wrap" id="railWrap">
+      <div class="rail">
+        <div class="rail-fill" id="railFill"></div>
+        <div class="rail-marker" id="railMarker"></div>
+      </div>
+
+      <div class="t-row pre" data-year="2017">
+        <div class="t-card">
+          <div class="t-year">Jan 2017 — Oct 2017</div>
+          <div class="t-role">Marketing Assistant</div>
+          <div class="t-org">Careem (acquired by Uber) · Dubai, UAE</div>
+          <p class="t-desc">Produced marketing graphics, ran BTL and mall activations, and built restaurant partnerships — first steps into brand marketing at one of the region's fastest-growing startups.</p>
+        </div>
+        <div class="t-node"></div>
+        <div></div>
+      </div>
+
+      <div class="t-row pre" data-year="2018">
+        <div></div>
+        <div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-year">Oct 2017 — Jun 2018</div>
+          <div class="t-role">Marketing Executive</div>
+          <div class="t-org">Konsalidon Consultancy · Dubai, UAE</div>
+          <p class="t-desc">Delivered conferences, industry events, presentations and digital ad campaigns; built partnerships to boost lead generation.</p>
+        </div>
+      </div>
+
+      <div class="t-row pre" data-year="2019">
+        <div class="t-card">
+          <div class="t-year">Jun 2018 — Nov 2019</div>
+          <div class="t-role">Senior Marketing Executive</div>
+          <div class="t-org">Midas Safety · Dubai, UAE</div>
+          <p class="t-desc">Led content and creative for new EAR, EYE and RESPIRATORY product-category launches, driving brand recognition and market share.</p>
+        </div>
+        <div class="t-node"></div>
+        <div></div>
+      </div>
+
+      <div class="t-row pre" data-year="2020">
+        <div></div>
+        <div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-year">Nov 2019 — Feb 2020</div>
+          <div class="t-role">Social Media Manager</div>
+          <div class="t-org">fäm Properties Real Estate · Dubai, UAE</div>
+          <p class="t-desc">Led multilingual digital marketing across regional and international markets; improved lead capture and nurturing through CRM automation.</p>
+        </div>
+      </div>
+
+      <div class="t-row pre" data-year="2021">
+        <div class="t-card">
+          <div class="t-year">Feb 2020 — May 2021</div>
+          <div class="t-role">Marketing Lead</div>
+          <div class="t-org">Trukkin Technologistics · Dubai, UAE</div>
+          <p class="t-desc">Executed multi-channel marketing across Pakistan, UAE and KSA; launched a viral national campaign and built partnerships with PSO Pakistan and TOTAL PARCO.</p>
+        </div>
+        <div class="t-node"></div>
+        <div></div>
+      </div>
+
+      <div class="t-row pre" data-year="2022">
+        <div></div>
+        <div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-year">May 2021 — Jun 2022</div>
+          <div class="t-role">Growth &amp; Ads Manager</div>
+          <div class="t-org">Mobile XA Marketing Agency · Boston, USA</div>
+          <p class="t-desc">Overhauled growth strategy and implemented Bitrix24, delivering 5× revenue growth while managing a $50K/month ad budget.</p>
+        </div>
+      </div>
+
+      <div class="t-row pre" data-year="2023">
+        <div class="t-card">
+          <div class="t-year">Jun 2022 — Dec 2023</div>
+          <div class="t-role">Marketing Manager</div>
+          <div class="t-org">TVG Real Estate Brokerage · Dubai, UAE</div>
+          <p class="t-desc">Grew online leads 35% in one year with a 20% CPA reduction; integrated HubSpot, MailChimp, Zoho CRM, Unbounce and Agency Analytics.</p>
+        </div>
+        <div class="t-node"></div>
+        <div></div>
+      </div>
+
+      <div class="t-row pre current" data-year="2024">
+        <div></div>
+        <div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-year">Jan 2024 — Present</div>
+          <div class="t-role">Senior Marketing Manager</div>
+          <div class="t-org">Al Suwaidi Investments Group (ASICO) · Dubai, UAE</div>
+          <p class="t-desc">Leads a 12-member team incl. an in-house AI pod across a UAE holding group. Directed ASICO's corporate rebrand, launched Injaz &amp; Trust Conveyancing identities, and built the AI voice agent now handling 1,000+ conversations/month.</p>
+        </div>
+      </div>
+
+      <div class="t-row pre current" data-year="2026">
+        <div class="t-card">
+          <div class="t-year">Mar 2026 — Present</div>
+          <div class="t-role">Senior Product &amp; Design Manager</div>
+          <div class="t-org">Al Suwaidi Investments Group (ASICO) · Dubai, UAE</div>
+          <p class="t-desc">Drives commercial and product planning across a 7-brand PropTech &amp; HR-tech portfolio — designing agentic AI workflows, roadmaps and Figma prototypes with a prototype-first approach.</p>
+        </div>
+        <div class="t-node"></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <span class="eyebrow" data-reveal-group><span class="reveal words" data-split="What I Bring"></span></span>
+        <h2 data-reveal-group><span class="reveal words" data-split="Signature"></span><br><span class="reveal words" data-split="Strengths."></span></h2>
+        <p>A hybrid marketing + product leader who can define the growth strategy, design the product, translate business problems into AI workflows, structure the CRM, brief developers, and measure the commercial outcome.</p>
+        <a class="cta" href="assets/Sheeraz-Shaikh-CV.pdf" download>
+          <span class="flood"></span>
+          <span>Full Resume</span>
+          <svg viewBox="0 0 14 11" fill="none"><path d="M0 5.5H13M8 10L13 5.5L8 1" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:1.6rem;">
+        <div class="panel-light bracket">
+          <span class="corner c-tl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="corner c-tr"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="corner c-br"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="corner c-bl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="p-eyebrow">Core Expertise</span>
+          <div class="strength" style="--val:.94"><div class="lbl"><span>AI Automation &amp; Agentic Systems</span></div><div class="bar"><i class="accentbar"></i></div></div>
+          <div class="strength" style="--val:.9"><div class="lbl"><span>360° Marketing &amp; PR Leadership</span></div><div class="bar"><i></i></div></div>
+          <div class="strength" style="--val:.85"><div class="lbl"><span>Product Strategy &amp; Design</span></div><div class="bar"><i class="accentbar"></i></div></div>
+          <div class="strength" style="--val:.88"><div class="lbl"><span>Performance &amp; Paid Media</span></div><div class="bar"><i></i></div></div>
+          <div class="strength" style="--val:.82"><div class="lbl"><span>CRM / ERP &amp; Workflow Automation</span></div><div class="bar"><i class="accentbar"></i></div></div>
+          <div class="strength" style="--val:.9"><div class="lbl"><span>Data-Driven Growth</span></div><div class="bar"><i></i></div></div>
+        </div>
+
+        <div class="panel-light bracket">
+          <span class="corner c-tl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="corner c-tr"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="corner c-br"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="corner c-bl"><svg viewBox="0 0 10.5 10.5"><path d="M0 0.5H10V10.5" stroke="currentColor" fill="none"/></svg></span>
+          <span class="p-eyebrow">Tools &amp; Platforms</span>
+          <div class="tool-tags">
+            <span>HubSpot</span><span>Zoho CRM</span><span>Odoo</span><span>Bitrix24</span><span>MailChimp</span>
+            <span>Unbounce</span><span>Meta Ads Manager</span><span>Google Ads</span><span>GA4</span>
+            <span>Agency Analytics</span><span>Figma</span><span>WhatsApp Business API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="below-grid">
+      <div class="info-block rise">
+        <h3>Education</h3>
+        <div class="edu-item">
+          <b>MBA, Business &amp; Digital Marketing</b>
+          <span>University of Wollongong, Dubai · 2017–2019</span>
+        </div>
+        <div class="edu-item">
+          <b>BBA, Business Administration</b>
+          <span>Isra University, Pakistan · 2013–2017</span>
+        </div>
+        <div class="edu-item" style="margin-top:1.6rem;">
+          <b style="color:var(--cyan-400);font-size:.75rem;letter-spacing:.12em;">Languages</b>
+          <span>English — Fluent · Urdu / Hindi — Native</span>
+        </div>
+      </div>
+      <div class="info-block rise rise-d1">
+        <h3>Certifications</h3>
+        <ul class="cert-list">
+          <li>Meta Certified Digital Marketing Associate — Meta Blueprint</li>
+          <li>Google Digital Garage — Fundamentals of Digital Marketing</li>
+          <li>Google AI Essentials — Google Career Certificates</li>
+          <li>OpenAI Certified — AI Foundations</li>
+          <li>Claude (Anthropic) Certificate — Anthropic Academy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brands rise">
+      <h3>Brands Currently Steered</h3>
+      <div class="brand-grid">
+        <span>ASICO Real Estate</span>
+        <span>ASICO Property Management</span>
+        <span>ASICO Development</span>
+        <span>Yardscape</span>
+        <span>Injaz</span>
+        <span>Aqari</span>
+        <span>Trust Conveyancing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="panel-dark">
+    <canvas class="field" id="footField" aria-hidden="true"></canvas>
+    <div class="foot-top">
+      <div class="foot-logo">
+        <img src="assets/logo.png" alt="">
+      </div>
+      <div class="foot-head">
+        <h2 data-reveal-group><span class="reveal words" data-split="Let's Build"></span><br><span class="reveal words" data-split="Something."></span></h2>
+      </div>
+    </div>
+
+    <div class="foot-mid">
+      <nav class="foot-nav">
+        <a href="#hero">Profile</a>
+        <a href="#impact">Impact</a>
+        <a href="#timeline">Experience</a>
+        <a href="#skills">Skills</a>
+      </nav>
+      <div class="foot-contact">
+        <div class="line">📍 Dubai, UAE</div>
+        <div class="line"><a href="mailto:sheerazshaikh1@outlook.com">sheerazshaikh1@outlook.com</a></div>
+        <div class="line"><a href="tel:+971588525065">+971 58 852 5065</a></div>
+        <a class="cta" href="mailto:sheerazshaikh1@outlook.com">
+          <span class="flood"></span>
+          <span>Get In Touch</span>
+          <svg viewBox="0 0 14 11" fill="none"><path d="M0 5.5H13M8 10L13 5.5L8 1" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <small>© 2026 Sheeraz Shaikh. All rights reserved.</small>
+      <div class="foot-socials">
+        <a href="https://www.linkedin.com/in/sheerazshaikh231/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:sheerazshaikh1@outlook.com">Email</a>
+        <a href="tel:+971588525065">Call</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- word-split reveal ---------- */
+  document.querySelectorAll("[data-split]").forEach(function(el){
+    var text = el.getAttribute("data-split");
+    var words = text.split(" ");
+    el.innerHTML = "";
+    words.forEach(function(w, i){
+      var span = document.createElement("span");
+      span.className = "unit";
+      span.style.transitionDelay = (i * 70) + "ms";
+      span.textContent = w;
+      el.appendChild(span);
+      if(i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    });
+  });
+
+  /* ---------- IntersectionObserver reveals ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add("in");
+      }
+    });
+  }, { threshold: 0.2, rootMargin: "0px 0px -10% 0px" });
+
+  document.querySelectorAll("[data-reveal-group], .rise, [data-observe]").forEach(function(el){
+    io.observe(el);
+  });
+
+  /* ---------- count-up stats ---------- */
+  var counted = new WeakSet();
+  var countIo = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting && !counted.has(entry.target)){
+        counted.add(entry.target);
+        var el = entry.target;
+        var target = parseFloat(el.getAttribute("data-count"));
+        var suffix = el.getAttribute("data-suffix") || "";
+        if(isNaN(target)) return;
+        var numEl = el.querySelector(".num");
+        var start = performance.now();
+        var duration = 1200;
+        function step(now){
+          var t = Math.min(1, (now - start) / duration);
+          var eased = 1 - Math.pow(1 - t, 3);
+          var val = Math.round(target * eased);
+          numEl.textContent = val + suffix;
+          if(t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll("[data-count]").forEach(function(el){ countIo.observe(el); });
+
+  /* ---------- strength bars ---------- */
+  var barIo = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting) entry.target.classList.add("in");
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll(".strength").forEach(function(el){ barIo.observe(el); });
+
+  /* ---------- timeline rail + node reveals ---------- */
+  var railWrap = document.getElementById("railWrap");
+  var railFill = document.getElementById("railFill");
+  var railMarker = document.getElementById("railMarker");
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".t-row"));
+
+  var rowIo = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.remove("pre");
+        var card = entry.target.querySelector(".t-card");
+        if(card) card.classList.add("in");
+        var node = entry.target.querySelector(".t-node");
+        if(node) node.classList.add("lit");
+      }
+    });
+  }, { threshold: 0.35 });
+  rows.forEach(function(r){ rowIo.observe(r); });
+
+  function updateRail(){
+    if(!railWrap) return;
+    var rect = railWrap.getBoundingClientRect();
+    var vh = window.innerHeight || 1;
+    var total = rect.height;
+    var start = vh * 0.75;
+    var progress = (start - rect.top) / (total + start - vh * 0.25);
+    progress = Math.max(0, Math.min(1, progress));
+    var px = progress * total;
+    railFill.style.height = px + "px";
+    railMarker.style.top = px + "px";
+    railMarker.style.transform = "translate(-50%,-50%) rotate(" + (progress * 720) + "deg)";
+  }
+  var railTicking = false;
+  window.addEventListener("scroll", function(){
+    if(!railTicking){
+      railTicking = true;
+      requestAnimationFrame(function(){ updateRail(); railTicking = false; });
+    }
+  }, { passive:true });
+  window.addEventListener("resize", updateRail);
+  updateRail();
+
+  /* ---------- mobile sheet ---------- */
+  var burger = document.getElementById("burgerBtn");
+  var sheet = document.getElementById("sheet");
+  var sheetClose = document.getElementById("sheetClose");
+  function openSheet(){
+    sheet.classList.add("open");
+    burger.setAttribute("aria-expanded","true");
+    document.documentElement.style.overflow = "hidden";
+    sheetClose.focus();
+  }
+  function closeSheet(){
+    sheet.classList.remove("open");
+    burger.setAttribute("aria-expanded","false");
+    document.documentElement.style.overflow = "";
+    burger.focus();
+  }
+  burger.addEventListener("click", openSheet);
+  sheetClose.addEventListener("click", closeSheet);
+  sheet.querySelectorAll("nav a").forEach(function(a){ a.addEventListener("click", closeSheet); });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && sheet.classList.contains("open")) closeSheet();
+  });
+
+  /* ---------- contour field canvas (marching squares) ---------- */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function makeContourField(canvas, opts){
+    if(!canvas) return;
+    var ctx = canvas.getContext("2d");
+    var LINE_SCALE = opts.lineScale || 3.2;
+    var LINE_COUNT = opts.lineCount || 2.5;
+    var WAVE_AMOUNT = 0.37;
+    var WAVE_SPEED = opts.speed || 0.5;
+    var CELLS = opts.cells || 64;
+    var color = opts.color || "rgba(2,210,227,0.12)";
+    var running = true;
+    var start = null;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var width = 0, height = 0;
+
+    function field(x, y, t){
+      var f = Math.sin(x * 1.0 + t * 0.6) * 0.5;
+      f += Math.sin(y * 0.85 - t * 0.45) * 0.45;
+      f += Math.sin((x + y) * 0.65 + t * 0.35) * 0.35;
+      f += Math.sin((x - y) * 0.95 - t * 0.55) * 0.25;
+      return f * 0.5 + 0.5;
+    }
+
+    function resize(){
+      var rect = canvas.getBoundingClientRect();
+      width = Math.max(1, Math.round(rect.width));
+      height = Math.max(1, Math.round(rect.height));
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function draw(now){
+      if(!running) return;
+      if(start === null) start = now;
+      var t = (now - start) / 1000 * WAVE_SPEED;
+      var cols = width >= height ? CELLS : Math.max(8, Math.round(CELLS * width / height));
+      var rows2 = Math.max(8, Math.round(cols * height / width));
+      var stepX = width / cols, stepY = height / rows2, aspect = width / height;
+      var values = new Float32Array((cols + 1) * (rows2 + 1));
+      for(var j = 0; j <= rows2; j++){
+        for(var i = 0; i <= cols; i++){
+          var nx = ((i / cols) * 2 - 1) * aspect * LINE_SCALE;
+          var ny = ((j / rows2) * 2 - 1) * LINE_SCALE;
+          var qx = nx + Math.sin(ny * 0.8 + t * 0.7) * WAVE_AMOUNT;
+          var qy = ny + Math.cos(nx * 0.7 - t * 0.6) * WAVE_AMOUNT;
+          values[j * (cols + 1) + i] = field(qx, qy, t) * LINE_COUNT;
+        }
+      }
+      ctx.clearRect(0, 0, width, height);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for(var level = 0.5; level < LINE_COUNT; level += 1){
+        for(var jj = 0; jj < rows2; jj++){
+          for(var ii = 0; ii < cols; ii++){
+            var a = values[jj * (cols + 1) + ii], b = values[jj * (cols + 1) + ii + 1];
+            var c = values[(jj + 1) * (cols + 1) + ii + 1], d = values[(jj + 1) * (cols + 1) + ii];
+            var index = (a > level ? 8 : 0) | (b > level ? 4 : 0) | (c > level ? 2 : 0) | (d > level ? 1 : 0);
+            if(index === 0 || index === 15) continue;
+            var x0 = ii * stepX, y0 = jj * stepY;
+            var top = [x0 + stepX * ((level - a) / (b - a)), y0];
+            var right = [x0 + stepX, y0 + stepY * ((level - b) / (c - b))];
+            var bottom = [x0 + stepX * ((level - d) / (c - d)), y0 + stepY];
+            var left = [x0, y0 + stepY * ((level - a) / (d - a))];
+            function seg(p, q){ ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); }
+            switch(index){
+              case 1: case 14: seg(left, bottom); break;
+              case 2: case 13: seg(bottom, right); break;
+              case 3: case 12: seg(left, right); break;
+              case 4: case 11: seg(top, right); break;
+              case 6: case 9:  seg(top, bottom); break;
+              case 7: case 8:  seg(left, top); break;
+              case 5:  seg(left, top); seg(bottom, right); break;
+              case 10: seg(left, bottom); seg(top, right); break;
+            }
+          }
+        }
+      }
+      ctx.stroke();
+      requestAnimationFrame(draw);
+    }
+
+    var visible = true;
+    var sectionObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){ visible = entry.isIntersecting; });
+    }, { threshold: 0 });
+    sectionObserver.observe(canvas.parentElement);
+
+    if(!reduceMotion){
+      requestAnimationFrame(draw);
+    } else {
+      draw(0);
+      running = false;
+    }
+  }
+
+  makeContourField(document.getElementById("heroField"), { color:"rgba(2,210,227,0.14)", cells:56, speed:.5, lineScale:3.4 });
+  makeContourField(document.getElementById("impactField"), { color:"rgba(255,255,255,0.05)", cells:56, speed:.4, lineScale:3.0 });
+  makeContourField(document.getElementById("footField"), { color:"rgba(255,255,255,0.08)", cells:56, speed:.4, lineScale:3.2 });
+
+  /* ---------- loader ---------- */
+  var loader = document.getElementById("loader");
+  var fill = document.getElementById("loaderFill");
+  var progress = 0;
+  var raf;
+  function tick(){
+    progress += (0.92 - progress) * 0.08;
+    fill.style.transform = "scaleX(" + progress + ")";
+    if(progress < 0.9) raf = requestAnimationFrame(tick);
+  }
+  raf = requestAnimationFrame(tick);
+  window.addEventListener("load", function(){
+    cancelAnimationFrame(raf);
+    fill.style.transform = "scaleX(1)";
+    setTimeout(function(){
+      loader.classList.add("hidden");
+      document.querySelectorAll("[data-reveal-group]").forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if(r.top < window.innerHeight) el.classList.add("in");
+      });
+      document.querySelectorAll(".rise").forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if(r.top < window.innerHeight) el.classList.add("in");
+      });
+    }, 350);
+  });
+  // Safety: never let the loader hang forever
+  setTimeout(function(){ loader.classList.add("hidden"); }, 3000);
+})();
+</script>
+</body>
+</html>
